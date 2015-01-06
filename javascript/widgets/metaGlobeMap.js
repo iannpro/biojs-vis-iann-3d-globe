@@ -441,7 +441,8 @@ labelEnter.append("input")
     .on("click", function(d,i) { 
         
         equirectangular = (i === 0) ? false : true;
-
+        
+        if(zoom2D) return;
 
         if( i === 1){
        
