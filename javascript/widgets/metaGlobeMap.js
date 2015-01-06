@@ -357,6 +357,7 @@ var world = g.selectAll('path')
 
         plotMarkers();
         g.selectAll(".focused").classed("focused", false);
+        zoneTooltip.style("display", "none");
 
       }
 
