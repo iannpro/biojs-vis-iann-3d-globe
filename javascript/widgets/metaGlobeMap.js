@@ -521,6 +521,23 @@ function zoomin2D(d)
         };
       });
 
+      if(!equirectangular) {
+          
+        //optional feature: Zoom in when country is selected from  drop down list.
+        setTimeout(function() {
+          function heres(d) {
+
+            //openGlobe();
+            backgroundCircle.transition().duration(5000).style("display", "none");
+
+            zoomGlobe(d, false);
+
+          };
+
+          heres(focusedCountry);
+        }, 2800);
+
+      }
 
       })();
 
