@@ -296,7 +296,7 @@ var world = g.selectAll('path')
 
 
   //Events processing
-  var toplist = zoneTooltip.append("ul").attr("class","zoneTooltipList");
+  var eventList = zoneTooltip.append("ul").attr("class","zoneTooltipList");
 
   world.on("mouseover", function(d) {     
       infoLabel.text(d.properties.name)
@@ -402,7 +402,7 @@ var world = g.selectAll('path')
           function heres() {
 
             zoomin2D(d);
-            tooltipCreate(d);
+            createEventList(d);
           };
 
           heres();
@@ -580,8 +580,8 @@ function zoomin2D(d)
 
   }
 
-  function tooltipCreate(d){
-    $(toplist).empty();
+  function createEventList(d){
+    $(eventList).empty();
 
     var countryHasEvents = false;
 
@@ -600,7 +600,7 @@ function zoomin2D(d)
             
             var here = "<a href="+doc.link+" class=iann_item_title>"+doc.title+"</a><br><span class=iann_item_date>"+doc.start+"-"+doc.end+"</span><br><span class=iann_item_place>"+doc.provider+","+doc.city+","+doc.country+"</span><br><span class=iann_item_author>"+doc.submission_organization+"</span>";
 
-           toplist.append("li").html(here);
+           eventList.append("li").html(here);
 
            countryHasEvents = true;
             
