@@ -402,14 +402,11 @@ var world = g.selectAll('path')
           function heres() {
 
             zoomin2D(d);
-
+            tooltipCreate(d);
           };
 
           heres();
         }, time);
-
-        tooltipCreate(d);
-
        
   }
 
