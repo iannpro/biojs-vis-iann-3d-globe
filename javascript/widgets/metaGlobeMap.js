@@ -98,12 +98,11 @@ var g = svgMap.append('g');
 
 
 //Rotate to default before animation
-
 var locations = svgMap.append('g')
           .attr('id', 'locations');
 
-        // Having defined the projection, update the backgroundCircle radius:
-      backgroundCircle.attr('r', projection.scale() );
+// Having defined the projection, update the backgroundCircle radius:
+ backgroundCircle.attr('r', projection.scale() );
 
 
 
@@ -276,7 +275,8 @@ var world = g.selectAll('path')
     .origin(function() { var r = projection.rotate(); return {x: r[0] / sens, y: -r[1] / sens}; })
     .on("drag", function() {
 
-      if(equirectangular) return;
+      //No drag when we are in equi and zoomed modes
+      if(equirectangular || zoom2D) return;
 
       var lambda = d3.event.x * sens,
       phi = -d3.event.y * sens,
@@ -298,31 +298,19 @@ var world = g.selectAll('path')
   //Events processing
   var toplist = zoneTooltip.append("ul").attr("class","zoneTooltipList");
 
-  world.on("mouseover", function(d) {
-    //if (zoom2D === false) {
-     
-          infoLabel.text(d.properties.name)
-            .style("left", (d3.event.pageX) + "px")
-            .style("top", (d3.event.pageY) + "px")
-            .style("display", "inline");
+  world.on("mouseover", function(d) {     
+      infoLabel.text(d.properties.name)
+        .style("left", (d3.event.pageX) + "px")
+        .style("top", (d3.event.pageY) + "px")
+        .style("display", "inline");
 
-    //} 
-   
-      
-   // }
   })
   .on("mouseout", function(d) {
-   // if (ortho === true) {
       infoLabel.style("display", "none");
-   // } else {
-      //zoneTooltip.style("display", "none");
-//}
   })
   .on("mousemove", function() {
-   // if (ortho === false) {
       infoLabel.style("left", (d3.event.pageX + 7) + "px")
                .style("top", (d3.event.pageY - 15) + "px");
-   // }
   })
   .on("dblclick", function(d) {
 
@@ -426,8 +414,6 @@ var world = g.selectAll('path')
   }
 
 
-///
-
 labelEnter.append("input")
     .attr({
         type: "radio",
@@ -470,6 +456,9 @@ function zoomin2D(d)
     x = centroid[0];
     y = centroid[1];
     k = 3;
+
+    //if(!equirectangular) k = 2;
+
     centered = d;
   } else {
     x = mapWidth / 2;
@@ -502,7 +491,6 @@ function zoomin2D(d)
 
 }
   ///TEST
-
   var selectionCountries = d3.select("select");//.data(collectionCountries);
 
   selectionCountries.on("change", function(d) {
@@ -531,7 +519,9 @@ function zoomin2D(d)
           
 
         };
-      })
+      });
+
+
       })();
 
 
@@ -547,11 +537,6 @@ function zoomin2D(d)
     };
 
 
-
-  ///TEST
-
-
-
   //Adding extra data when focused
 
   function focus(d) {
@@ -565,10 +550,8 @@ function zoomin2D(d)
     infoLabel.style("display", "none");
     zoneTooltip.style("display", "none");
 
-    //Transforming Map to Globe
-
+    //Transforming Map to Globe and plotting markers
     plotMarkers();
-
 
     projection = projectionGlobe;
     path.projection(projection);
@@ -616,9 +599,11 @@ function zoomin2D(d)
     if(countryHasEvents){
 
         zoneTooltip
-          .style("left", (d3.event.pageX + 7) + "px")
-          .style("top", (d3.event.pageY - 15) + "px")
+          //.style("left", (d3.event.pageX + 7) + "px")
+          //.style("top", (d3.event.pageY - 15) + "px")
           .style("display", "block");
+
+
 
     }
      
