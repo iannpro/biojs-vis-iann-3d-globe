@@ -436,16 +436,14 @@ labelEnter.append("input")
         value: function(d, i) {return i;}
     })
     .property("checked", function(d, i) {
-        //equirectangular = (i === 0)?true : false;
-        //console.log("selection kya hai="+equirectangular);
         return (i===j); 
     })
     .on("click", function(d,i) { 
         
         equirectangular = (i === 0) ? false : true;
-        console.log("click pe value="+equirectangular);
 
-        if(i === 1){
+
+        if( i === 1){
        
             openGlobe();
 
@@ -508,13 +506,14 @@ function zoomin2D(d)
 
   selectionCountries.on("change", function(d) {
         
-      if(equirectangular) return;
+
+      if(zoom2D) return;
 
       var rotate = projection.rotate(),
       focusedCountry = country(countries, this),
       p = d3.geo.centroid(focusedCountry);
 
-      console.log("change=="+JSON.stringify(focusedCountry));
+      //console.log("change=="+JSON.stringify(focusedCountry));
 
       svgMap.selectAll(".focused").classed("focused", focused = false);
 
@@ -525,7 +524,7 @@ function zoomin2D(d)
       .tween("rotate", function() {
         var r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
         return function(t) {
-          projection.rotate(r(t));
+          if(!equirectangular) projection.rotate(r(t));
           svgMap.selectAll("path").attr("d", path)
           .classed("focused", function(d, i) { return d.id == focusedCountry.id ? focused = d : false; });
           
@@ -534,9 +533,8 @@ function zoomin2D(d)
       })
       })();
 
-      //openGlobe();
-      //zoomGlobe(focusedCountry, true);
-      //tooltipCreate(focusedCountry);
+
+      if(equirectangular) zoomGlobe(focusedCountry, false);
       
     });
 
